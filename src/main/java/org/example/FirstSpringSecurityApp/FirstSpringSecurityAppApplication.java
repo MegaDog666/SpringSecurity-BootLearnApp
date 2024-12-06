@@ -1,6 +1,5 @@
 package org.example.FirstSpringSecurityApp;
 
-import org.example.FirstSpringSecurityApp.services.PasswordEncryptionService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

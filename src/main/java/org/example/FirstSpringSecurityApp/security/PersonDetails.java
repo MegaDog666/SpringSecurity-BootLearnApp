@@ -48,8 +48,8 @@ public class PersonDetails implements UserDetails {
         return true;
     }
 
-    // Нужно чтобы получать данные аутентифицированного пользователя
     public Person getPerson() {
         return this.person;
     }
+
 }
