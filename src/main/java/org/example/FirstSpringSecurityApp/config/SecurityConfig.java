@@ -24,17 +24,25 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(csrf -> csrf.disable())
+
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/auth/login", "/error").permitAll()
                         .anyRequest().authenticated()
                 )
+
                 .formLogin(formLogin -> formLogin
-                        .permitAll()
-                )
-                .logout(logout -> logout
-                        .permitAll()
+                .loginPage("/auth/login")
+                .loginProcessingUrl("/process_login")
+                .defaultSuccessUrl("/hello", true)
+                .failureForwardUrl("/auth/login?error")
                 );
+
+//                .logout(logout -> logout
+//                        .permitAll()
+//                );
 
         return http.build();
     }
@@ -45,7 +53,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+    protected AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder.userDetailsService(personDetailsService);
         return authenticationManagerBuilder.build();
